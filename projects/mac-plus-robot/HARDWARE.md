@@ -15,7 +15,8 @@ These are project decisions supplied by the owner, not a tested assembly:
 | Serial electrical interface | SP3490 full-duplex module |
 | Host connection | Motherboard printer serial port, asynchronous serial |
 | Display | Replacement approach undecided; original analog-board/CRT path absent |
-| Power supply | Replacement supply and harness not yet specified |
+| Power supply | Considering RGEEK-300L Pico-ATX; harness and input supply not yet specified |
+| Audio amplifier | LM386-based amplifier; module/suffix and speaker not yet specified |
 
 The serial GPIO project and [MacGPIO protocol](../mac-plus-gpio/PROTOCOL.md)
 remain applicable to this motherboard-only build. The Pico handles local I/O;
@@ -46,6 +47,81 @@ The final design must account for motor starting/stall current, noise, return
 paths, and the signal-ground connection through the nonisolated SP3490 module.
 Provide mounting, cooling, insulation, and appropriate supply protection for
 the exposed motherboard. No CRT high-voltage circuitry is part of this plan.
+
+## Candidate power supply: RGEEK-300L
+
+The owner supplied this output-rating table. These are advertised ratings,
+not independently verified measurements or a complete manufacturer datasheet.
+
+| Output | Advertised average / peak current | Advertised ripple maximum |
+| --- | --- | --- |
+| +3.3 V | 6 / 8 A | 50 mV |
+| +5 V standby | 1.5 / 2 A | 50 mV |
+| +5 V main | 6 / 8 A | 50 mV |
+| +12 V | 15 / 18 A | 120 mV |
+| −12 V | 0.1 / 0.2 A | 120 mV |
+
+The rail set makes this a plausible candidate for the Plus. Selection depends
+on the motherboard's actual rail requirements, loaded voltage measurements,
+and the complete system budget. The +5 V main rail's 6 A continuous rating and
+the −12 V rail's 100 mA continuous rating deserve particular attention; peak
+ratings are not continuous design allowances. Do not choose by the product's
+headline wattage or sum per-rail maxima as guaranteed simultaneous capacity.
+The table's −12 V minimum/maximum labels are numerically reversed; treat its
+apparent −12.6 to −11.4 V range as an advertised tolerance to confirm, not a
+verified operating requirement for the motherboard.
+
+Before selecting the unit, verify:
+
+- Required DC input voltage range, polarity, input connector current capacity,
+  external adapter rating, and whether +12 V is regulated or passed through.
+  A regulated adapter and a variable robot battery are different input cases.
+- Combined output limits, temperature derating, minimum-load requirements,
+  startup timing, and protection behavior from documentation for the exact unit.
+- +5 V budget for motherboard, upgrades, storage if powered here, and peripherals;
+  −12 V budget for the actual serial circuitry. Measure startup and operating
+  loads and retain margin. Do not place the Mac on the standby rail.
+- Standard ATX PS_ON# behavior and the connector's actual pinout. If confirmed
+  ATX-compatible, an appropriate switch can pull PS_ON# to COM to enable main
+  outputs. PWR_OK is a status signal, not automatically a Mac reset input.
+- A custom, documented motherboard harness. An ATX connector is not a direct
+  replacement for the Plus connector. Leave unused supply outputs insulated.
+- Loaded rail voltage and ripple at the motherboard, including Zip activity
+  and audio playback. Scope startup and shutdown for overshoot or sequencing
+  issues before relying on the supply for an unattended robot.
+
+For bench work, power the Pico by USB as in the GPIO guide. For integrated
+power, use a supported Pico VSYS input arrangement; do not feed its 3V3 pin
+from the ATX 3.3 V rail. Plan USB power isolation or the documented power-ORing
+arrangement before combining external power and USB. Keep the SP3490 on the
+Pico's regulated 3.3 V output.
+
+## Audio: LM386 amplifier
+
+An LM386-based amplifier is the selected replacement speaker-amplifier path.
+Use the motherboard audio signal identified in the Plus schematic; do not
+assume it is a line-level output or route it directly to a speaker.
+
+Start with the LM386's base gain of 20 rather than adding the optional gain
+capacitor for gain 200. A premade module may already have that capacitor.
+Provide input AC coupling and a volume/attenuation control as needed after
+checking the source's amplitude and DC bias. Keep amplifier input impedance
+high enough to avoid loading the motherboard output.
+
+Choose supply voltage from the exact LM386 suffix or module specification;
+do not assume every LM386 variant accepts 12 V. A regulated 5 V branch is a
+candidate if supported by the module. Specify the speaker's impedance and
+power rating against that supply and the amplifier's output capability.
+Follow the datasheet application circuit for output coupling, bypassing,
+local bulk/ceramic decoupling, and stability components; a module may already
+include them. An ordinary single-supply LM386 output needs a series output
+capacitor before a ground-referenced speaker.
+
+Route speaker and amplifier supply return currents away from the low-level
+audio input return. Test at low volume first, then check clipping, noise,
+oscillation, and interaction with disk and serial activity. This amplifier
+does not require a new MacGPIO command: the Mac continues generating audio
+through its existing sound hardware.
 
 ## Video and startup diagnostics
 
