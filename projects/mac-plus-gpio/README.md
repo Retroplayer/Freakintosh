@@ -7,6 +7,12 @@ motors.
 
 ## Architecture
 
+The host is a **Macintosh Plus motherboard without its analog board**, with an
+ordered Clipper Plus internal SCSI adapter and ROM-inator, and planned Zip
+storage. See the [robot hardware plan](../mac-plus-robot/HARDWARE.md) for power,
+video, and boot-storage requirements. Replacement power must support the Mac's
+serial circuitry as well as its logic before this link can be validated.
+
 Mac Plus printer port → full-duplex SP3490 module → Pico 2 UART0.
 
 Use ordinary asynchronous serial, 9600 baud, 8 data bits, no parity, 1 stop bit,
