@@ -14,7 +14,7 @@ These are project decisions supplied by the owner, not a tested assembly:
 | GPIO controller | Raspberry Pi Pico 2 |
 | Serial electrical interface | SP3490 full-duplex module |
 | Host connection | Motherboard printer serial port, asynchronous serial |
-| Display | Replacement approach undecided; original analog-board/CRT path absent |
+| Display | RGBtoHDMI recommended; exact converter and display not selected |
 | Power supply | Considering RGEEK-300L Pico-ATX; harness and input supply not yet specified |
 | Audio amplifier | LM386-based amplifier; module/suffix and speaker not yet specified |
 
@@ -124,6 +124,9 @@ does not require a new MacGPIO command: the Mac continues generating audio
 through its existing sound hardware.
 
 ## Video and startup diagnostics
+
+See the [video plan](VIDEO.md) for the verified upstream Mac Plus capture
+profile, converter options, source timing, and remaining electrical design.
 
 A motherboard-only Mac can still generate its native video signals, but those
 signals are not a direct VGA or HDMI interface. A replacement display requires
