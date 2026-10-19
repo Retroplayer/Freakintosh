@@ -86,6 +86,10 @@ a hardware test. Use the existing checkout for development; no worktree is neede
 
 ## Protocol v0
 
+The [MacGPIO 1.0 specification](PROTOCOL.md) defines the planned framed protocol
+with sequence numbers, CRC, discovery, and output leases. It is not yet
+implemented by this firmware. The commands below describe the current v0 only.
+
 ASCII commands, one per line, terminated by CR, LF, or CRLF. Responses end in
 CRLF. Maximum command length is 64 bytes. Send one command and wait for its
 response before sending another. Commands are uppercase and case-sensitive.
