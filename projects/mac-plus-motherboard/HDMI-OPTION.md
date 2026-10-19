@@ -1,4 +1,8 @@
-# Macintosh Plus motherboard video
+# Macintosh Plus motherboard: optional HDMI conversion
+
+This is an alternative for projects using HDMI displays. The PWP 425 conversion
+instead targets its existing CRT; see [that project's plan](../pwp-425-mac/README.md).
+HDMI is not a prerequisite for the shared motherboard build.
 
 Status: converter recommendation, not a completed schematic or tested assembly.
 The analog board and CRT are omitted. The goal is to view native Mac video
@@ -98,8 +102,8 @@ if pursuing this rather than coupling robot I/O reliability to video firmware.
 
 ## Display selection and acceptance
 
-For initial tests, use an existing HDMI monitor with the converter. For the
-robot, select an HDMI-input display assembly; a raw LCD panel needs its own
+For projects selecting this option, use an existing HDMI monitor with the
+converter for initial tests. An HDMI display assembly is one option; a raw LCD panel needs its own
 matching controller and power supply. Preserve square source pixels and the
 512:342 image aspect ratio; do not stretch the desktop to fill a widescreen
 panel. Prefer integer scaling when the converter/output resolution permits it.
@@ -117,6 +121,6 @@ Mac framebuffer. No video hardware tests have been performed yet.
 - [RGBtoHDMI wiki](https://github.com/hoglet67/RGBtoHDMI/wiki): hardware and setup documentation to consult for the selected board.
 - The pinned Mac Plus profile above: active dimensions and timing parameters.
 
-Next choose the converter assembly and whether the target is a bench monitor
-or an integrated robot display. Then complete the verified pickup harness
+If a project selects HDMI, choose the converter assembly and target display.
+Then complete the verified pickup harness
 drawing against the Plus schematic and that converter's input documentation.

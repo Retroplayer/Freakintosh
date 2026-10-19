@@ -9,7 +9,7 @@ motors.
 
 The host is a **Macintosh Plus motherboard without its analog board**, with an
 ordered Clipper Plus internal SCSI adapter and ROM-inator, and planned Zip
-storage. See the [robot hardware plan](../mac-plus-robot/HARDWARE.md) for power,
+storage. See the [shared hardware plan](../mac-plus-motherboard/HARDWARE.md) for power,
 video, and boot-storage requirements. Replacement power must support the Mac's
 serial circuitry as well as its logic before this link can be validated.
 

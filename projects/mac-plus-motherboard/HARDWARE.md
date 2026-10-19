@@ -1,4 +1,8 @@
-# Macintosh Plus robot: hardware baseline
+# Macintosh Plus motherboard: shared hardware baseline
+
+These notes support multiple Macintosh projects, not only the robot. The
+[PWP 425 conversion](../pwp-425-mac/README.md) targets the Smith Corona chassis
+and its existing CRT. GPIO and motion control are separate project capabilities.
 
 ## Selected hardware
 
@@ -14,7 +18,7 @@ These are project decisions supplied by the owner, not a tested assembly:
 | GPIO controller | Raspberry Pi Pico 2 |
 | Serial electrical interface | SP3490 full-duplex module |
 | Host connection | Motherboard printer serial port, asynchronous serial |
-| Display | RGBtoHDMI recommended; exact converter and display not selected |
+| Display | Project-specific; PWP 425 conversion retains its existing CRT |
 | Power supply | Considering RGEEK-300L Pico-ATX; harness and input supply not yet specified |
 | Audio amplifier | LM386-based amplifier; module/suffix and speaker not yet specified |
 
@@ -46,7 +50,8 @@ Keep motor power out of the motherboard supply path during initial bring-up.
 The final design must account for motor starting/stall current, noise, return
 paths, and the signal-ground connection through the nonisolated SP3490 module.
 Provide mounting, cooling, insulation, and appropriate supply protection for
-the exposed motherboard. No CRT high-voltage circuitry is part of this plan.
+the exposed motherboard. The Plus analog board is omitted; a project reusing
+another CRT may still require that CRT's original power and deflection board.
 
 ## Candidate power supply: RGEEK-300L
 
@@ -125,13 +130,13 @@ through its existing sound hardware.
 
 ## Video and startup diagnostics
 
-See the [video plan](VIDEO.md) for the verified upstream Mac Plus capture
-profile, converter options, source timing, and remaining electrical design.
+For the PWP chassis, see the [PWP 425 CRT plan](../pwp-425-mac/README.md).
+The [HDMI option](HDMI-OPTION.md) is a separate reference for projects needing
+a modern display; it is not the selected interface for the PWP CRT.
 
 A motherboard-only Mac can still generate its native video signals, but those
-signals are not a direct VGA or HDMI interface. A replacement display requires
-a converter designed for the Plus's video timing and signal levels. Do not
-connect raw motherboard video directly to a modern monitor.
+signals are not a direct VGA or HDMI interface. Any target display must accept
+the Plus's video timing and electrical levels or use a suitable converter.
 
 Prefer a working diagnostic display path for initial RAM, ROM, and disk tests.
 A later headless build must boot into the host application unattended and offer
@@ -182,9 +187,9 @@ is made yet.
    acceptance test over the printer port.
 6. Implement and verify MacGPIO v1 on both ends before relying on its checksum,
    retry, or output-lease behavior; current firmware still implements v0.
-7. Add unattended application startup and recovery diagnostics. Design a
-   separately reviewed motor interface and motion-safety extension before
-   attaching actuators.
+7. Complete the selected project's peripherals and startup behavior. For a
+   robot, design a separately reviewed motor interface and motion-safety
+   extension before attaching actuators. This is not a PWP conversion requirement.
 
 None of these hardware checks has been completed in the cloud environment.
 Exact harness wiring, display conversion, and boot-media preparation remain
